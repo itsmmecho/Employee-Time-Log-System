@@ -1,75 +1,38 @@
--- 1. Create the database
-CREATE DATABASE employee_time_log_system;
-
--- 2. Use the database
-USE employee_time_log_system;
-
--- 3. Employees table
-CREATE TABLE employees (
-    employee_id INT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
-    email VARCHAR(100) UNIQUE,
-    phone VARCHAR(20),
-    department VARCHAR(50),
-    role VARCHAR(50), -- e.g., Admin, Manager, Staff
+-- Employees Table with password
+CREATE TABLE Employees (
+    employee_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL, -- Storing hashed password
+    role ENUM('admin', 'employee') NOT NULL,
     status ENUM('active', 'inactive') DEFAULT 'active',
-    hire_date DATE,
-    password_hash VARCHAR(255)
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- 4. Time Logs table
-CREATE TABLE time_logs (
-    log_id INT PRIMARY KEY AUTO_INCREMENT,
+
+-- Time Logs Table
+CREATE TABLE Time_Logs (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
     employee_id INT,
+    clock_in DATETIME,
+    clock_out DATETIME,
+    total_hours DECIMAL(5,2) GENERATED ALWAYS AS (TIMESTAMPDIFF(MINUTE, clock_in, clock_out) / 60) STORED,
     date DATE,
-    time_in DATETIME,
-    time_out DATETIME,
     notes TEXT,
-    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
 );
 
--- 5. Shifts table
-CREATE TABLE shifts (
-    shift_id INT PRIMARY KEY AUTO_INCREMENT,
+-- Dashboard Stats Table (optional)
+CREATE TABLE Dashboard_Stats (
+    stat_id INT AUTO_INCREMENT PRIMARY KEY,
     employee_id INT,
-    shift_date DATE,
-    start_time TIME,
-    end_time TIME,
-    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+    total_hours_worked DECIMAL(10,2),
+    total_days_worked INT,
+    last_login DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
 );
-
--- 6. Leave Requests table
-CREATE TABLE leave_requests (
-    leave_id INT PRIMARY KEY AUTO_INCREMENT,
-    employee_id INT,
-    start_date DATE,
-    end_date DATE,
-    leave_type VARCHAR(50),
-    status ENUM('pending', 'approved', 'denied') DEFAULT 'pending',
-    reason TEXT,
-    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
-);
-
--- 7. Reports table
-CREATE TABLE reports (
-    report_id INT PRIMARY KEY AUTO_INCREMENT,
-    employee_id INT,
-    report_type VARCHAR(50), -- e.g., "monthly", "overtime"
-    generated_at DATETIME,
-    file_url VARCHAR(255),
-    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
-);
-
--- 8. Settings table
-CREATE TABLE settings (
-    setting_key VARCHAR(100) PRIMARY KEY,
-    setting_value TEXT
-);
-
--- Optional: Insert default settings
-INSERT INTO settings (setting_key, setting_value) VALUES
-('default_work_start', '09:00'),
-('default_work_end', '17:00'),
-('timezone', 'UTC+0'),
-('notify_on_missed_checkin', 'true');
