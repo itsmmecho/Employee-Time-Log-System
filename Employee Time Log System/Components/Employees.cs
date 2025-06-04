@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Employee_Time_Log_System
 {
-    public partial class Form1 : Form
+    public partial class Employees : Form
     {
-        public Form1()
+        public Employees()
         {
             InitializeComponent();
         }

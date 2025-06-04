@@ -1,0 +1,75 @@
+-- 1. Create the database
+CREATE DATABASE employee_time_log_system;
+
+-- 2. Use the database
+USE employee_time_log_system;
+
+-- 3. Employees table
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(100) UNIQUE,
+    phone VARCHAR(20),
+    department VARCHAR(50),
+    role VARCHAR(50), -- e.g., Admin, Manager, Staff
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    hire_date DATE,
+    password_hash VARCHAR(255)
+);
+
+-- 4. Time Logs table
+CREATE TABLE time_logs (
+    log_id INT PRIMARY KEY AUTO_INCREMENT,
+    employee_id INT,
+    date DATE,
+    time_in DATETIME,
+    time_out DATETIME,
+    notes TEXT,
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
+-- 5. Shifts table
+CREATE TABLE shifts (
+    shift_id INT PRIMARY KEY AUTO_INCREMENT,
+    employee_id INT,
+    shift_date DATE,
+    start_time TIME,
+    end_time TIME,
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
+-- 6. Leave Requests table
+CREATE TABLE leave_requests (
+    leave_id INT PRIMARY KEY AUTO_INCREMENT,
+    employee_id INT,
+    start_date DATE,
+    end_date DATE,
+    leave_type VARCHAR(50),
+    status ENUM('pending', 'approved', 'denied') DEFAULT 'pending',
+    reason TEXT,
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
+-- 7. Reports table
+CREATE TABLE reports (
+    report_id INT PRIMARY KEY AUTO_INCREMENT,
+    employee_id INT,
+    report_type VARCHAR(50), -- e.g., "monthly", "overtime"
+    generated_at DATETIME,
+    file_url VARCHAR(255),
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
+-- 8. Settings table
+CREATE TABLE settings (
+    setting_key VARCHAR(100) PRIMARY KEY,
+    setting_value TEXT
+);
+
+-- Optional: Insert default settings
+INSERT INTO settings (setting_key, setting_value) VALUES
+('default_work_start', '09:00'),
+('default_work_end', '17:00'),
+('timezone', 'UTC+0'),
+('notify_on_missed_checkin', 'true');
