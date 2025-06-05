@@ -104,11 +104,18 @@
     <Compile Include="Components\Dashboard.Designer.cs">
       <DependentUpon>Dashboard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\DatabaseHelper.cs" />
     <Compile Include="Components\Employees.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Components\Employees.Designer.cs">
       <DependentUpon>Employees.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\TimeLogz.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\TimeLogz.Designer.cs">
+      <DependentUpon>TimeLogz.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\UserAuth.cs">
       <SubType>Form</SubType>
@@ -130,17 +137,14 @@
     <Compile Include="Components\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\TimeLogs.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Components\TimeLogs.Designer.cs">
-      <DependentUpon>TimeLogs.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Components\Dashboard.resx">
       <DependentUpon>Dashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\Employees.resx">
       <DependentUpon>Employees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\TimeLogz.resx">
+      <DependentUpon>TimeLogz.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\UserAuth.resx">
       <DependentUpon>UserAuth.cs</DependentUpon>

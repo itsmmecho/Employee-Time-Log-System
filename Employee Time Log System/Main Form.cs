@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Employee_Time_Log_System.Components;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -37,8 +38,8 @@ namespace Employee_Time_Log_System
         }
 
         private void btnTimeLogs_Click(object sender, EventArgs e)
-        {
-            LoadFormInPanel(new TimeLogs());
+        { 
+            LoadFormInPanel(new TimeLogz());
         }
 
         private void btnEmployees_Click(object sender, EventArgs e)
